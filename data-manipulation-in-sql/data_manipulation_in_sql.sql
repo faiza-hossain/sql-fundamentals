@@ -264,3 +264,57 @@ WHERE
                    FROM match 
 				   WHERE season = '2012/2013');
 		
+-- correlated subqueries
+SELECT 
+	main.country_id,
+    main.date,
+    main.home_goal,
+    main.away_goal
+FROM match AS main
+WHERE 
+	(home_goal + away_goal) > 
+        (SELECT AVG((sub.home_goal + sub.away_goal) * 3)
+         FROM match AS sub
+         WHERE main.country_id = sub.country_id);
+
+SELECT 
+	main.country_id,
+    main.date,
+    main.home_goal,
+    main.away_goal
+FROM match AS main
+WHERE 
+	-- Filter for matches with the maximum number of total goals scored
+	(home_goal + away_goal) = 
+        (SELECT MAX(sub.home_goal + sub.away_goal)
+         FROM match AS sub
+         WHERE main.country_id = sub.country_id
+               AND main.season = sub.season);
+
+-- nested subqueries
+SELECT 
+    season,
+    MAX(home_goal + away_goal) AS max_goals,
+    (SELECT MAX(home_goal + away_goal) 
+     FROM match 
+     WHERE season = main.season
+     -- Subquery to get the max goals in an 'England Premier League' match for the same season
+     AND country_id IN (SELECT country_id from League where name='England Premier League')
+    ) AS pl_max_goals
+FROM match AS main
+GROUP BY season;
+
+SELECT
+	c.name AS country,
+	avg(outer_s.matches) AS avg_seasonal_high_scores
+FROM country AS c
+Left join (
+  SELECT country_id, season,
+         COUNT(id) AS matches
+  FROM (
+    SELECT country_id, season, id
+	FROM match
+	WHERE home_goal >= 5 OR away_goal >= 5) AS inner_s
+  GROUP BY country_id, season) AS outer_s
+ON c.id = outer_s.country_id
+GROUP BY country;
