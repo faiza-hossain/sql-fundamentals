@@ -7,3 +7,7 @@ This repository serves as my personal documentation and archive for the DataCamp
  - Conditional selection & summation with CASE WHEN
  - Subqueries in WHERE,SELECT,FROM
  - Correlated queries
+ - Nested queries
+ - Common Table Expressions(CTEs)
+ - Window Functions
+ - Windows Partitions
