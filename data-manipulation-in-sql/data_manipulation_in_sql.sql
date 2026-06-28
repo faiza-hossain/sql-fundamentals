@@ -560,3 +560,81 @@ WHERE
 	-- Filter for 2014/2015 and Manchester United as the home team
 	m.season = '2014/2015'
 	AND t.team_long_name = 'Manchester United';
+--------------------
+SELECT 
+	m.id, 
+    t.team_long_name,
+    -- Identify matches as home/away wins or ties
+	CASE when m.home_goal > m.away_goal then 'MU Loss'
+		when m.home_goal <m.away_goal then 'MU Win'
+        else 'Tie' end AS outcome
+-- Join the match table's awayteam_id to the team table
+FROM match AS m
+LEFT JOIN team AS t 
+ON m.awayteam_id = t.team_api_id
+WHERE 
+	-- Filter for 2014/2015 and Manchester United as the away team
+	m.season = '2014/2015'
+	AND t.team_long_name = 'Manchester United';
+-----------
+-- Set up the home team CTE
+With home as (
+  SELECT m.id, t.team_long_name,
+	  CASE WHEN m.home_goal > m.away_goal THEN 'MU Win'
+		   WHEN m.home_goal < m.away_goal THEN 'MU Loss' 
+  		   ELSE 'Tie' END AS outcome
+  FROM match AS m
+  LEFT JOIN team AS t ON m.hometeam_id = t.team_api_id),
+-- Set up the away team CTE
+away AS (
+  SELECT m.id, t.team_long_name,
+	  CASE WHEN m.home_goal > m.away_goal THEN 'MU Loss'
+		   WHEN m.home_goal < m.away_goal THEN 'MU Win' 
+  		   ELSE 'Tie' END AS outcome
+  FROM match AS m
+  LEFT JOIN team AS t ON m.awayteam_id = t.team_api_id)
+-- Select the date, team names and goals
+SELECT DISTINCT
+    m.date,
+    home.team_long_name AS home_team_name,
+    away.team_long_name AS away_team_name,
+    m.home_goal,
+    m.away_goal
+-- Join the CTEs onto the match table
+FROM match AS m
+left JOIN home ON m.id = home.id
+left JOIN away ON m.id = away.id
+WHERE m.season = '2014/2015'
+      AND (home.team_long_name = 'Manchester United' 
+           OR away.team_long_name = 'Manchester United');
+--Add a window function
+-- Set up the home team CTE
+with home AS (
+  SELECT m.id, t.team_long_name,
+	  CASE WHEN m.home_goal > m.away_goal THEN 'MU Win'
+		   WHEN m.home_goal < m.away_goal THEN 'MU Loss' 
+  		   ELSE 'Tie' END AS outcome
+  FROM match AS m
+  LEFT JOIN team AS t ON m.hometeam_id = t.team_api_id),
+-- Set up the away team CTE
+away AS (
+  SELECT m.id, t.team_long_name,
+	  CASE WHEN m.home_goal > m.away_goal THEN 'MU Loss'
+		   WHEN m.home_goal < m.away_goal THEN 'MU Win' 
+  		   ELSE 'Tie' END AS outcome
+  FROM match AS m
+  LEFT JOIN team AS t ON m.awayteam_id = t.team_api_id)
+-- Select columns and and rank the matches by goal difference
+SELECT DISTINCT
+    m.date,
+    home.team_long_name AS home_team,
+    away.team_long_name AS away_team,
+    m.home_goal, m.away_goal,
+    Rank() over(order by ABS(home_goal - away_goal) desc) as match_rank
+-- Join the CTEs onto the match table
+FROM match AS m
+LEFT JOIN home ON m.id = home.id
+LEFT JOIN away ON m.id = away.id
+WHERE m.season = '2014/2015'
+      AND ((home.team_long_name = 'Manchester United' AND home.outcome = 'MU Loss')
+      OR (away.team_long_name = 'Manchester United' AND away.outcome = 'MU Loss'));
