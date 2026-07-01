@@ -11,3 +11,10 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Common Table Expressions(CTEs)
   - Window Functions
   - Windows Partitions
+-PostgreSQL Summary Stats and Window Functions
+  - Window Functions vs GROUP BY
+  - ORDER BY
+  - PARTITION BY
+  - Fetching
+  - Ranking
+  - Paging
