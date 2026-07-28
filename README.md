@@ -11,6 +11,11 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Common Table Expressions(CTEs)
   - Window Functions
   - Windows Partitions
+- Functions for Data manipulation
+  - Date and time data types
+  - Interval datatypes
+  - Searching an array with ANY
+  - Searching an array with @>
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
