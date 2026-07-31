@@ -16,6 +16,7 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Interval datatypes
   - Searching an array with ANY
   - Searching an array with @>
+  - Adding & subtracting date and time values
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
