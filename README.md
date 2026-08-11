@@ -19,7 +19,8 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Adding & subtracting date and time values
   - Retrieving current date/time
   - Transforming date/time data
-  - Reformatting string and character 
+  - Reformatting string and character
+  - Uses of EXTRACT()
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
