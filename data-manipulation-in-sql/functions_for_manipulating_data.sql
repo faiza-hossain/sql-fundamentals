@@ -100,3 +100,52 @@ FROM film AS f
     INNER JOIN inventory AS i ON f.film_id = i.film_id
     INNER JOIN rental AS r ON i.inventory_id = r.inventory_id
 ORDER BY f.title;
+
+-- Select the current timestamp
+SELECT NOW();
+
+-- Select the current date
+SELECT CURRENT_DATE;
+
+--Select the current timestamp without a timezone
+SELECT CAST( NOW() AS timestamp )
+
+SELECT 
+	-- Select the current date
+	current_date,
+    -- CAST the result of the NOW() function to a date
+    CAST( NOW() AS date )
+
+--Select the current timestamp without timezone
+SELECT CURRENT_TIMESTAMP::TIMESTAMP AS right_now;
+
+SELECT
+	CURRENT_TIMESTAMP(0)::timestamp AS right_now,
+    interval '5 days' + CURRENT_TIMESTAMP(0) AS five_days_from_now;
+
+---EXTRACT()
+-- Extract day of week from rental_date
+SELECT 
+  EXTRACT(dow FROM rental_date) AS dayofweek, 
+  -- Count the number of rentals
+  count(*) as rentals 
+FROM rental 
+GROUP BY 1;
+
+--Using DATE_TRUNC
+-- Truncate rental_date by year
+SELECT DATE_TRUNC('year', rental_date) AS rental_year
+FROM rental;
+-- Truncate rental_date by month
+SELECT date_trunc('month', rental_date) AS rental_month
+FROM rental;
+-- Truncate rental_date by day of the month 
+SELECT date_trunc('day', rental_date) AS rental_day 
+FROM rental;
+
+SELECT 
+  DATE_TRUNC('day', rental_date) AS rental_day,
+  -- Count total number of rentals 
+  Count(*) AS rentals 
+FROM rental
+GROUP BY 1;
