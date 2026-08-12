@@ -21,6 +21,7 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Transforming date/time data
   - Reformatting string and character
   - Uses of EXTRACT()
+  - DATE_TRUNC()
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
