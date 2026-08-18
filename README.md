@@ -22,7 +22,7 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Reformatting string and character
   - Uses of EXTRACT()
   - DATE_TRUNC()
-  - Parsing and manipulating
+  - Parsing and manipulating text
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
