@@ -23,6 +23,7 @@ This repository serves as my personal documentation and archive for the DataCamp
   - Uses of EXTRACT()
   - DATE_TRUNC()
   - Parsing and manipulating text
+  - Reforming string & character data
 - PostgreSQL Summary Stats and Window Functions
   - Window Functions vs GROUP BY
   - ORDER BY
